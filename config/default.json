@@ -1,0 +1,16 @@
+{
+    "plugins": [
+        "dmplugin-teamcity"
+    ],
+    "server": {
+        "port": 4000
+    },
+    "logging": {
+        "path": "logs",
+        "toConsole": true,
+        "level": "debug"
+    },
+    "mongo": {
+        "url": "mongodb://localhost:27017/dashboard"
+    }
+}
