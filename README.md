@@ -2,14 +2,12 @@
 
 A highly customizable dashboard used to radiate important information to interested people.
 
-This was originally built as part of the [Entelect](http://www.entelect.co.za) "Tech Accelerator" program. The system won first prize and is still actively used within Entelect.
+This is a group up rewrite of [this dashboard](https://github.com/dm-dashboard/dashboard) building on the lessons learnt from building and using it. It is written using TypeScript 2, Angular 2 and no mean.io dependancy.
 
 Although originally built for software development teams, there is nothing stopping it's use in other industries and areas.
 
-![](docs/DashboardScreenshot.png)
-
-
-## Features
+## Features 
+**Note: Not all of these features have been ported across to the new version yet**
 
 1. Centralized server that does all the grunt work of talking to other systems
 2. Browser based clients with always up connection to the server with push updates
@@ -20,27 +18,23 @@ Although originally built for software development teams, there is nothing stopp
 5. Client control dashboard allowing remote control of connected clients machines, allowing you to identify them, change their active dashboard or force-reload them.
 6. Plugin architecture - Endless possibilities. If you have a system that exposes an API, it can be added to your dashboard with a custom plugin.
 
-![](docs/DashboardScreenshot_admin.png)
-
-![](docs/DashboardScreenshot_client.png)
-
 ## Architecture
 
 The core system is a node backend connected via web sockets to an Angular frontend. 
 
 MongoDB is used to store configuration and is also available to plugins for storage of their own data.
 
-Actual monitoring and display is handled by plugins consisting of a backend node script and a custom Angular directive.
+Actual monitoring and display is handled by plugins consisting of a backend node script and a custom Angular component.
 
 There are no plugins installed by default, however the following are available in the plugins repo under the dm-dashboard org:
-* Teamcity (designed specifically to keep an eye on multiple projects)
+* Teamcity (designed specifically to keep an eye on multiple projects and in the process of being ported across)
     * Show a history of recent builds across all projects with failed builds floating to the top
     * A list of currently executing builds
     * Build agent queues
     * Some stats of successfull/failed builds over the past day/week/month
-* Octopus Deploy
+* Octopus Deploy (Still to be ported)
     * Show details of the most recent deploy for a project
-* Client Only (Various widgets that don't require a server side component) 
+* Client Only (Various widgets that don't require a server side component)  (Still to be ported)
     *  Display an image
     *  Play a Youtube video
     *  Display an iFrame
@@ -49,20 +43,14 @@ There are no plugins installed by default, however the following are available i
     * Consume a client .net API using [edge.js](http://tjanczuk.github.io/edge/)
     * Experimental Microsoft TFS plugin
 
-## Important Notice
+Some goals for this rewrite:
 
-This app was originally written in 2014 and has had minimal changes since then. 
-It is based on the popular [mean.io](http://mean.io) stack which allowed for the plugin nature of the design.
-
-Even though it works currently (and is actively used) I have decided to open-source and share this code as I'm sure many other teams will benefit from using it. I would also like to bring it kicking and screaming into the present. 
-
-Some things that I would like to see happen:
-- Upgrade to Angular 2
-- Remove the dependency on mean.io, it was helpful to get plugability quickly during the origianl contest, but it also contains a lot of overhead and unnecessary complexity. I think a plain old node/express (or some other backend framework) with custom plugin code would be much easier to maintain
-- Upgrade to a new version of node
-- Remove the need to check-in the node_modules folder, this is partly due to the age of the system as some of its indirect dependencies (via mean.io) have changed substantially and a fresh install would break the system.
-- Much simpler installation process that doesn't require a git clone
-- Lightweight client (less Javascript and animations) option for Raspberry Pi type clients connected to TVs 
+- [X] Upgrade to Angular 2
+- [X] Remove the dependency on mean.io, it was helpful to get plugability quickly during the origianl contest, but it also contains a lot of overhead and unnecessary complexity. I think a plain old node/express (or some other backend framework) with custom plugin code would be much easier to maintain
+- [X] Upgrade to a new version of node
+- [X] Remove the need to check-in the node_modules folder, this is partly due to the age of the system as some of its indirect dependencies (via mean.io) have changed substantially and a fresh install would break the system.
+- [ ] Much simpler installation process that doesn't require a git clone
+- [ ] Lightweight client (less Javascript and animations) option for Raspberry Pi type clients connected to TVs 
 
 
 If you find it useful, please consider contributing to modernizing it and getting it cleaned up and easier to maintain.
@@ -70,55 +58,33 @@ If you find it useful, please consider contributing to modernizing it and gettin
 ## Installation Instructions
 
 ### Prequisites
-1. Node v0.12 or greater
+1. Node v6.9.5 or later
 1. MongoDB v3 or greater
-1. Git v1.9 or greater
 1. The dashboard will run on Windows or Linux, though a Linux installation may be easier
 
-### Optional Prequisites
-1. Python v2.7 or greater (If you intend to rebuild or fiddle with the node modules. It is required for mongoose)
-
 ### To Install
-1. If you're running on Windows
-  * You will need to enable long filenames, the node_modules folder is included in the repo for historical pain relief :)
-  * Run the following on your git bash
-    * ``` git config --system core.longpaths true ```
 1. Clone the git repo onto the destination server
-  * ``` git clone git@github.com:dm-dashboard/dashboard.git ```
-1. Change into the checkout folder and install forever.js
+  * ``` git clone git@github.com:dm-dashboard/rewrite.git ```
+1. Change into the checkout folder
+1. ```npm install``` OR ```yarn```
+1. install forever.js
   * Forever allows you to run a node script in the background and auto restarts it if it crashes
   * ``` npm install -g forever```
-1. Install the mean.io command line tools
-  * ``` npm install -g mean-cli```
 1. Before we start the server, we will need to configure it for your environment
 
 ### To Configure
 1. Change to the checkout folder
-1. Open config/env/development.json
+1. Open config/default.json
   1. Update the "db" property to point to your mongo DB
   1. Save and close the file
 
 ### Installing Plugins
-1. Checkout the desired plugin and copy it to
-```[install dir]/packages/custom  ```
-
-#### Sample plugin config process:
-1. If you're planning to use the TeamCity plugin, open packages/custom/edp-teamcity/server/teamcity.js
-  1. The teamcity plugin contains various submodules
-  1. There is a blacklist at the top of the page, any submodule listed here is not booted
-  1. Comment out the submodules that you want to load
-  1. You will definitely need
-    * teamcity-stats-fetcher
-  1. You will probably find the following useful
-    * teamcity-build-status
-    * teamcity-health
-    * teamcity-realtime
-  1. Save the file and close it
+1. Plugins are installed via NPM, more to follow
   
 ### To start everything up
 1. Change to the checkout folder
 1. Run the following:
-    * ```forever start server.js --singleProcess``` 
+    * ```forever start bin/index.js``` 
 1. You will see forever starting the node process and then it returns you to the console.
 1. To see what forever is currently managing
     * ```forever list```
@@ -127,21 +93,8 @@ If you find it useful, please consider contributing to modernizing it and gettin
     * OR
     * ```forever stop 0```  
 1. Open your browser and navigate to 
-    * ```http://[path_to_where_you_deployed]:3000```     
-1. **Note:** There is currently an error "{ Error: Cannot find module '../build/Release/bson'" when starting up, I'm working on figuring out what it means, but it does not affect functionality so you can ignore it.
+    * ```http://[path_to_where_you_deployed]:4000```     
   
-### Creating an admin user
-
-1. Once connected to the dashboard in your browser, you should see a "Join" link in the top right
-1. Click it and create an account - this will create a standard user account
-1. Open a console in the checkout folder
-1. Run the following
-    * ```mean user youremail@email.com -a admin```
-    * 
-1. Refresh the page, you should now see some admin menus
-2. As an admin you will be able to configure plugins using the "Plugins" menu
-    * You will also be able to create your first dashboard
-
 ### Initial Setup
 1. Create a dashboard...TODO
 1. Configure plugins...TODO
