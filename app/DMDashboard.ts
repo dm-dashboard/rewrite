@@ -35,13 +35,14 @@ export class DMDashboard {
 
                     this.scheduler = container.get(Scheduler);
                     this.watchDog = container.get(WatchDog);
+                    this.watchDog.setLogger(this.logger.fork('watchdog'));
                     this.socketManager = container.get(SocketManager);
                     this.socketManager.listen(this.logger.fork('socket-manager'), httpServer);
 
                     this.pluginManager = container.get(PluginManager);
                     this.pluginManager.load(this.logger.fork('plugin-manager'), this.logger, container);
 
-                    this.watchDog.start(this.logger.fork('watchdog'));
+                    this.watchDog.start(this.pluginManager);
 
                     this.logger.info('All components started, kicking off scheduler');
                     this.scheduler.start(this.logger.fork('scheduler'))
