@@ -31,7 +31,7 @@
     "body-parser": "^1.16.0",
     "config": "^1.24.0",
     "cors": "^2.8.1",
-    "dmdashboard-core": "../core/dmdashboard-core-1.1.2.tgz",
+    "dm-dashboard-core": "https://github.com/dm-dashboard/dmdashboard-core",
     "express": "^4.14.0",
     "express-di": "^5.0.0",
     "injection-js": "^2.0.0-rc.2",
