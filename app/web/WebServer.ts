@@ -1,4 +1,4 @@
-import { ILogger, Configuration } from 'dmdashboard-core';
+import { ILogger, Configuration } from 'dm-dashboard-core';
 import * as express from 'express';
 import * as path from 'path';
 import * as http from 'http';

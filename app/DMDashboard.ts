@@ -1,6 +1,6 @@
 import {
     SocketManager, PluginManager, WatchDog, Scheduler, MongoConnection, AppLogger, Configuration
-} from 'dmdashboard-core';
+} from 'dm-dashboard-core';
 
 
 import { WebServer } from './web/WebServer';
