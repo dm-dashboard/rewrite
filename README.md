@@ -1,5 +1,7 @@
 # DM Dashboard
 
+![Build Status](https://circleci.com/gh/dm-dashboard/rewrite.png?style=shield)
+
 A highly customizable dashboard used to radiate important information to interested people.
 
 This is a group up rewrite of [this dashboard](https://github.com/dm-dashboard/dashboard) building on the lessons learnt from building and using it. It is written using TypeScript 2, Angular 2 and no mean.io dependancy.
